@@ -1,5 +1,11 @@
 # Lista dos materias de apoio para o projeto
 
+## Notion
+https://www.notion.so/Requisitos-7db38227896246e59d6c6738a781d9e1
+
+## Whimsical
+https://whimsical.com/banco-de-dados-3MDtBHsZbpnpwA4cca3o4u
+
 ## NestJS
 https://docs.nestjs.com/
 

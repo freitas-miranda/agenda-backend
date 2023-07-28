@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsuarioModule } from './app/usuario/usuario.module';
 
 @Module({
   imports: [
@@ -16,8 +17,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         password: configService.get('DB_PASSWORD', 'sql@dev'),
         database: configService.get('DB_DATABASE', 'marcaja'),
         entities: [__dirname + '/**/*.entity{.js,.ts}'],
+        synchronize: false,
       }),
     }),
+    UsuarioModule,
   ],
 })
 export class AppModule {}

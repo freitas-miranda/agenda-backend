@@ -1,0 +1,29 @@
+# Usuário ---------------------------------------------
+### Listar usuário
+GET http://localhost:3000/api/v1/usuario
+
+### Exibir usuário
+GET http://localhost:3000/api/v1/usuario/fa806cb4-1b75-42d3-94f7-db727cfd2729
+
+### Criar usuário
+POST http://localhost:3000/api/v1/usuario
+Content-Type: application/json
+
+{
+  "email": "teste@gmail.com",
+  "senha": "12345678"
+} 
+  
+### Alterar usuário
+PATCH http://localhost:3000/api/v1/usuario/fa806cb4-1b75-42d3-94f7-db727cfd2729
+Content-Type: application/json
+
+{
+  "email": "freitas.miranda@gmail.com"
+}
+
+###  Deletar usuário
+DELETE http://localhost:3000/api/v1/usuario/6514ca43-6f24-42b6-9159-584197189423
+
+# Cliente ---------------------------------------------
+# Profissional-----------------------------------------
