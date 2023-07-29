@@ -19,7 +19,7 @@ export class UsuarioController {
 
   @Get(':id')
   async findOne(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.usuarioService.findOneOrFail(id);
+    return this.usuarioService.findOne(id);
   }
 
   @Patch(':id')
@@ -29,7 +29,7 @@ export class UsuarioController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.usuarioService.remove(id);
+  async delete(@Param('id', new ParseUUIDPipe()) id: string) {
+    return this.usuarioService.delete(id);
   }
 }

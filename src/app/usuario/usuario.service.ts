@@ -13,8 +13,6 @@ export class UsuarioService {
   ) {}
 
   async create(createUsuarioDto: CreateUsuarioDto) {
-    console.log('createUsuarioDto', createUsuarioDto);
-
     const usuario = this.usuarioRepository.create(createUsuarioDto);
     return this.usuarioRepository.save(usuario);
   }
@@ -23,7 +21,7 @@ export class UsuarioService {
     return this.usuarioRepository.find();
   }
 
-  async findOneOrFail(id: string) {
+  async findOne(id: string) {
     try {
       return this.usuarioRepository.findOneOrFail({ where: { id } });
     } catch (error) {
@@ -37,7 +35,7 @@ export class UsuarioService {
     return this.usuarioRepository.save(usuario);
   }
 
-  async remove(id: string) {
+  async delete(id: string) {
     await this.usuarioRepository.softDelete(id);
   }
 }
