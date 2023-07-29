@@ -37,11 +37,21 @@ describe('UsuarioService', () => {
 
   it('deve exibir um registro', async () => {
     const id = 'ABC';
-    await service.findOne(id);
-    expect(repository.findOneOrFail).toHaveBeenCalledWith({ where: { id } });
+    jest.spyOn(repository, 'findOneBy').mockResolvedValue({ id });
 
-    jest.spyOn(repository, 'findOneOrFail').mockRejectedValue(new Error('Boom'));
-    expect(async () => await service.findOne(id)).rejects.toThrowError('Boom');
+    const retorno = await service.findOne(id);
+    expect(retorno).toBeDefined();
+    expect(retorno).toEqual({ id });
+    expect(repository.findOneBy).toHaveBeenCalledWith({ id });
+
+    jest.spyOn(repository, 'findOneBy').mockResolvedValue(null);
+    try {
+      await service.findOne(id);
+      throw new Error('Não falhou!');
+    } catch (error) {
+      expect(error).toHaveProperty('message');
+      expect(error.message).toContain('Usuário não encotnrado!');
+    }
   });
 
   it('deve alterar um registro', async () => {

@@ -22,11 +22,9 @@ export class UsuarioService {
   }
 
   async findOne(id: string) {
-    try {
-      return this.usuarioRepository.findOneOrFail({ where: { id } });
-    } catch (error) {
-      throw new NotFoundException(error.message);
-    }
+    const usuario = await this.usuarioRepository.findOneBy({ id });
+    if (!usuario) throw new Error('Usuário não encotnrado!');
+    return usuario;
   }
 
   async update(id: string, updateUsuarioDto: UpdateUsuarioDto) {

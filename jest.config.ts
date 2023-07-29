@@ -8,8 +8,7 @@ export const configBase = {
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
-
-  collectCoverageFrom: ['**/*.(t|j)s'],
+  collectCoverageFrom: ['<rootDir>/src/app/**/*.(t|j)s', '!<rootDir>/src/**/*module.(t|j)s'],
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
   rootDir: './',
