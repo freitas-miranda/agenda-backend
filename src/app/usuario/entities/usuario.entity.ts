@@ -1,12 +1,5 @@
-import {
-  BeforeInsert,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Senha } from './senha.entity';
 
 @Entity({ name: 'usuario' })
 export class UsuarioEntity {
@@ -14,13 +7,16 @@ export class UsuarioEntity {
   id: string;
 
   @Column()
+  ativo: boolean;
+
+  @Column()
   email: string;
 
-  @Column()
-  senha: string;
+  @Column({ name: 'senha_hash' })
+  senhaHash: string;
 
-  @Column()
-  ativo: boolean;
+  @Column({ name: 'senha_salt' })
+  senhaSalt: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: string;
@@ -31,18 +27,24 @@ export class UsuarioEntity {
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: string;
 
-  @BeforeInsert()
-  hashPassword() {
-    this.senha = this.senha;
-  }
-
   constructor(usuario?: Partial<UsuarioEntity>) {
     this.id = usuario?.id;
+    this.ativo = usuario?.ativo || true;
     this.email = usuario?.email;
-    this.senha = usuario?.senha;
-    this.ativo = usuario?.ativo;
+    this.senhaHash = usuario?.senhaHash;
+    this.senhaSalt = usuario?.senhaSalt;
     this.createdAt = usuario?.createdAt;
     this.updatedAt = usuario?.updatedAt;
     this.deletedAt = usuario?.deletedAt;
+  }
+
+  static create(email: string, senhaAberta: string) {
+    const senha = Senha.create(senhaAberta);
+
+    return new UsuarioEntity({
+      email,
+      senhaHash: senha.hash,
+      senhaSalt: senha.salt,
+    });
   }
 }
