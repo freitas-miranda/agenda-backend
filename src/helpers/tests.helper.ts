@@ -8,12 +8,12 @@ const mockService = {
 
 const mockRepository = {
   create: jest.fn(),
-  update: jest.fn(),
   find: jest.fn(),
-  getById: jest.fn(),
-  getByEmail: jest.fn(),
-  delete: jest.fn(),
+  findOneOrFail: jest.fn(),
+  findOneBy: jest.fn(),
+  merge: jest.fn(),
   save: jest.fn(),
+  softDelete: jest.fn(),
 };
 
 export const TestsHelper = {
