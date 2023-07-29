@@ -1,0 +1,1 @@
+# Bibliotecas adicionadas ao projeto
