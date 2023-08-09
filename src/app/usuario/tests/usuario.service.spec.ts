@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsuarioService } from '../usuario.service';
 import { TestsHelper } from '@helpers/tests.helper';
+import { UsuarioEntity } from '../entities/usuario.entity';
 
 describe('UsuarioService', () => {
   let service: UsuarioService;
@@ -21,12 +22,13 @@ describe('UsuarioService', () => {
   });
 
   it('deve criar um registro', async () => {
+    const spy = jest.spyOn(UsuarioEntity, 'create');
     const input = {
       email: 'alan@miranda.com',
       senha: '12345678',
     };
     await service.create(input);
-    expect(repository.create).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
     expect(repository.save).toHaveBeenCalled();
   });
 
@@ -37,20 +39,25 @@ describe('UsuarioService', () => {
 
   it('deve exibir um registro', async () => {
     const id = 'ABC';
-    jest.spyOn(repository, 'findOneBy').mockResolvedValue({ id });
+    jest.spyOn(repository, 'findOne').mockResolvedValue({ id });
 
     const retorno = await service.findOne(id);
     expect(retorno).toBeDefined();
     expect(retorno).toEqual({ id });
-    expect(repository.findOneBy).toHaveBeenCalledWith({ id });
 
-    jest.spyOn(repository, 'findOneBy').mockResolvedValue(null);
+    const camposParaRetornar = ['id', 'ativo', 'email'];
+    expect(repository.findOne).toHaveBeenCalledWith({
+      select: camposParaRetornar,
+      where: { id },
+    });
+
+    jest.spyOn(repository, 'findOne').mockResolvedValue(null);
     try {
       await service.findOne(id);
       throw new Error('Não falhou!');
     } catch (error) {
       expect(error).toHaveProperty('message');
-      expect(error.message).toContain('Usuário não encotnrado!');
+      expect(error.message).toContain('Usuário não encontrado!');
     }
   });
 

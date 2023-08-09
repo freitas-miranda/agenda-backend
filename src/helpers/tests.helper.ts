@@ -11,6 +11,7 @@ const mockRepository = {
   find: jest.fn(),
   findOneOrFail: jest.fn(),
   findOneBy: jest.fn(),
+  findOne: jest.fn(),
   merge: jest.fn(),
   save: jest.fn(),
   softDelete: jest.fn(),

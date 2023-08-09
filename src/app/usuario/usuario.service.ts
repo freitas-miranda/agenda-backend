@@ -13,17 +13,20 @@ export class UsuarioService {
   ) {}
 
   async create(createUsuarioDto: CreateUsuarioDto) {
-    const usuario = this.usuarioRepository.create(createUsuarioDto);
+    const usuario = UsuarioEntity.create(createUsuarioDto.email, createUsuarioDto.senha);
     return this.usuarioRepository.save(usuario);
   }
 
   async findAll() {
-    return this.usuarioRepository.find();
+    return this.usuarioRepository.find({ select: ['id', 'ativo', 'email'] });
   }
 
   async findOne(id: string) {
-    const usuario = await this.usuarioRepository.findOneBy({ id });
-    if (!usuario) throw new Error('Usuário não encotnrado!');
+    const usuario = await this.usuarioRepository.findOne({
+      select: ['id', 'ativo', 'email'],
+      where: { id },
+    });
+    if (!usuario) throw new NotFoundException('Usuário não encontrado!');
     return usuario;
   }
 
