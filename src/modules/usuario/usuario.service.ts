@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { Repository } from 'typeorm';
@@ -19,8 +19,8 @@ export class UsuarioService {
     if (jaExiste) throw new BadRequestException('Já existe usuário cadastrado com este e-mail!');
 
     const usuario = UsuarioEntity.create(email, senha);
-    const { id } = await this.usuarioRepository.save(usuario);
-    return { id };
+    const criado = await this.usuarioRepository.save(usuario);
+    return { id: criado?.id };
   }
 
   async findAll() {

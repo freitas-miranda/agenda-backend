@@ -3,7 +3,7 @@
 GET http://localhost:3000/api/v1/usuario
 
 ### Exibir usuário
-GET http://localhost:3000/api/v1/usuario/60ef7402-6d63-41a6-afbd-455207d0056c
+GET http://localhost:3000/api/v1/usuario/a9ca34d8-5901-4390-8b86-7c0c06e0a135
 
 ### Criar usuário
 POST http://localhost:3000/api/v1/usuario
@@ -15,7 +15,7 @@ Content-Type: application/json
 } 
   
 ### Alterar usuário
-PATCH http://localhost:3000/api/v1/usuario/60ef7402-6d63-41a6-afbd-455207d0056c
+PATCH http://localhost:3000/api/v1/usuario/a9ca34d8-5901-4390-8b86-7c0c06e0a135
 Content-Type: application/json
 
 {

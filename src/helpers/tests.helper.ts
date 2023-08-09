@@ -1,3 +1,6 @@
+const item: any = { id: 'abc' };
+const list: any = [item];
+
 const mockService = {
   create: jest.fn(),
   findAll: jest.fn(),
@@ -6,11 +9,8 @@ const mockService = {
   delete: jest.fn(),
 };
 
-const item: any = { id: 'abc' };
-const list: any = [item];
-
 const mockRepository = {
-  create: jest.fn(),
+  create: jest.fn(() => item),
   find: jest.fn(() => list),
   findOneOrFail: jest.fn(() => item),
   findOneBy: jest.fn(() => item),
