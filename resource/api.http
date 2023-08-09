@@ -3,7 +3,7 @@
 GET http://localhost:3000/api/v1/usuario
 
 ### Exibir usuário
-GET http://localhost:3000/api/v1/usuario/fa806cb4-1b75-42d3-94f7-db727cfd2729
+GET http://localhost:3000/api/v1/usuario/d84ec75f-5bb9-4a3e-8dba-4caa1711e4c0
 
 ### Criar usuário
 POST http://localhost:3000/api/v1/usuario
@@ -11,15 +11,15 @@ Content-Type: application/json
 
 {
   "email": "teste@gmail.com",
-  "senha": "12345678"
+  "senha": "Alan@123"
 } 
   
 ### Alterar usuário
-PATCH http://localhost:3000/api/v1/usuario/fa806cb4-1b75-42d3-94f7-db727cfd2729
+PATCH http://localhost:3000/api/v1/usuario/d84ec75f-5bb9-4a3e-8dba-4caa1711e4c0
 Content-Type: application/json
 
 {
-  "email": "freitas.miranda@gmail.com"
+  "ativo": true
 }
 
 ###  Deletar usuário

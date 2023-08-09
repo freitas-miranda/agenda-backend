@@ -23,13 +23,14 @@ export class UsuarioController {
   }
 
   @Patch(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async update(@Param('id', new ParseUUIDPipe()) id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
-    return this.usuarioService.update(id, updateUsuarioDto);
+    await this.usuarioService.update(id, updateUsuarioDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id', new ParseUUIDPipe()) id: string) {
-    return this.usuarioService.delete(id);
+    await this.usuarioService.delete(id);
   }
 }

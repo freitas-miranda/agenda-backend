@@ -98,7 +98,10 @@ describe('Usuario (e2e)', () => {
       .patch('/api/v1/usuario/' + params['id'])
       .set('Authorization', 'Bearer ' + access_token)
       .send({ ativo: novoAtivo })
-      .expect(HttpStatus.OK);
+      .expect(HttpStatus.NO_CONTENT)
+      .then((value) => {
+        expect(value.body).toEqual({});
+      });
 
     return request(app.getHttpServer())
       .get('/api/v1/usuario/' + params['id'])
@@ -113,7 +116,10 @@ describe('Usuario (e2e)', () => {
     return request(app.getHttpServer())
       .delete('/api/v1/usuario/' + params['id'])
       .set('Authorization', 'Bearer ' + access_token)
-      .expect(HttpStatus.NO_CONTENT);
+      .expect(HttpStatus.NO_CONTENT)
+      .then((value) => {
+        expect(value.body).toEqual({});
+      });
   });
 
   afterAll(async () => {

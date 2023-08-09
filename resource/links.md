@@ -22,6 +22,5 @@ https://www.linkedin.com/pulse/melhores-pr%C3%A1ticas-do-dto-data-transfer-objec
 ## Swagger
 https://www.youtube.com/watch?v=PfSyDd3Sc5A&list=PLiPDj1LrYXr0M1gXepUacs9FvL4dJU40q&index=2
 
-
 ## Autenticação
 https://www.youtube.com/watch?v=jMprSQlDLGo

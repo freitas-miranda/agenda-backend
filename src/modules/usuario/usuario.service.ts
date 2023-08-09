@@ -33,7 +33,7 @@ export class UsuarioService {
   async update(id: string, updateUsuarioDto: UpdateUsuarioDto) {
     const usuario = await this.usuarioRepository.findOneBy({ id });
     this.usuarioRepository.merge(usuario, updateUsuarioDto);
-    return this.usuarioRepository.save(usuario);
+    await this.usuarioRepository.save(usuario);
   }
 
   async delete(id: string) {
