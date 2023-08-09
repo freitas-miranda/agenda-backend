@@ -1,4 +1,4 @@
--- Active: 1690573514770@@127.0.0.1@3306@marcaja
+-- Active: 1690573514770@@127.0.0.1@3306@marcaja_test
 create database marcaja;
 
 select * from usuario;
