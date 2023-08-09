@@ -6,12 +6,15 @@ const mockService = {
   delete: jest.fn(),
 };
 
+const item: any = { id: 'abc' };
+const list: any = [item];
+
 const mockRepository = {
   create: jest.fn(),
-  find: jest.fn(),
-  findOneOrFail: jest.fn(),
-  findOneBy: jest.fn(),
-  findOne: jest.fn(),
+  find: jest.fn(() => list),
+  findOneOrFail: jest.fn(() => item),
+  findOneBy: jest.fn(() => item),
+  findOne: jest.fn(() => item),
   merge: jest.fn(),
   save: jest.fn(),
   softDelete: jest.fn(),

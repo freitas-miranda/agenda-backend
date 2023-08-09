@@ -44,7 +44,13 @@ describe('Usuario (e2e)', () => {
       .expect(HttpStatus.CREATED);
 
     expect(retorno.body).toHaveProperty('id');
+    expect(retorno.body.id).toBeTruthy();
     params['id'] = retorno.body.id;
+
+    expect(retorno.body).not.toHaveProperty('email');
+    expect(retorno.body).not.toHaveProperty('ativo');
+    expect(retorno.body).not.toHaveProperty('senhaHash');
+    expect(retorno.body).not.toHaveProperty('senhaSalt');
   });
 
   it('[GET /api/v1/usuario/:id] Exibir um usuário', async () => {

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { Repository } from 'typeorm';
@@ -13,8 +13,14 @@ export class UsuarioService {
   ) {}
 
   async create(createUsuarioDto: CreateUsuarioDto) {
-    const usuario = UsuarioEntity.create(createUsuarioDto.email, createUsuarioDto.senha);
-    return this.usuarioRepository.save(usuario);
+    const { email, senha } = createUsuarioDto;
+
+    const jaExiste = await this.existeUsuarioComEmail(email);
+    if (jaExiste) throw new BadRequestException('Já existe usuário cadastrado com este e-mail!');
+
+    const usuario = UsuarioEntity.create(email, senha);
+    const { id } = await this.usuarioRepository.save(usuario);
+    return { id };
   }
 
   async findAll() {
@@ -32,11 +38,23 @@ export class UsuarioService {
 
   async update(id: string, updateUsuarioDto: UpdateUsuarioDto) {
     const usuario = await this.usuarioRepository.findOneBy({ id });
+    if (!usuario) throw new NotFoundException('Usuário não encontrado!');
+
     this.usuarioRepository.merge(usuario, updateUsuarioDto);
+
     await this.usuarioRepository.save(usuario);
   }
 
   async delete(id: string) {
     await this.usuarioRepository.softDelete(id);
+  }
+
+  async existeUsuarioComEmail(email: string): Promise<boolean> {
+    const usuarios = await this.usuarioRepository.find({
+      select: ['id'],
+      where: { email },
+    });
+
+    return usuarios?.length > 0;
   }
 }
