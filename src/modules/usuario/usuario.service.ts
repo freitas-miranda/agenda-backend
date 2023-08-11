@@ -27,34 +27,34 @@ export class UsuarioService {
     return this.usuarioRepository.find({ select: ['id', 'ativo', 'email'] });
   }
 
-  async findOne(id: string) {
-    const usuario = await this.usuarioRepository.findOne({
+  async findOne(id: number) {
+    const registro = await this.usuarioRepository.findOne({
       select: ['id', 'ativo', 'email'],
       where: { id },
     });
-    if (!usuario) throw new NotFoundException('Usuário não encontrado!');
-    return usuario;
+    if (!registro) throw new NotFoundException('Usuário não encontrado!');
+    return registro;
   }
 
-  async update(id: string, updateUsuarioDto: UpdateUsuarioDto) {
-    const usuario = await this.usuarioRepository.findOneBy({ id });
-    if (!usuario) throw new NotFoundException('Usuário não encontrado!');
+  async update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
+    const registro = await this.usuarioRepository.findOneBy({ id });
+    if (!registro) throw new NotFoundException('Usuário não encontrado!');
 
-    this.usuarioRepository.merge(usuario, updateUsuarioDto);
+    this.usuarioRepository.merge(registro, updateUsuarioDto);
 
-    await this.usuarioRepository.save(usuario);
+    await this.usuarioRepository.save(registro);
   }
 
-  async delete(id: string) {
+  async remove(id: number) {
     await this.usuarioRepository.softDelete(id);
   }
 
   async existeUsuarioComEmail(email: string): Promise<boolean> {
-    const usuarios = await this.usuarioRepository.find({
+    const registros = await this.usuarioRepository.find({
       select: ['id'],
       where: { email },
     });
 
-    return usuarios?.length > 0;
+    return registros?.length > 0;
   }
 }

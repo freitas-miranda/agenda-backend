@@ -1,28 +1,28 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsuarioService } from '../usuario.service';
+import { PermissaoService } from '../permissao.service';
 import { TestsHelper } from '@helpers/tests.helper';
-import { UsuarioEntity } from '../entities/usuario.entity';
+import { PermissaoEntity } from '../entities/permissao.entity';
 
-describe('UsuarioService', () => {
+describe('PermissaoService', () => {
   const id = 123;
-  const email = 'alan@miranda.com';
-  const senha = '12345678';
+  const key = 'admin';
+  const descricao = 'Descricação da permissão';
 
-  let service: UsuarioService;
+  let service: PermissaoService;
   const repository = TestsHelper.mockRepository;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        UsuarioService,
+        PermissaoService,
         {
-          provide: 'UsuarioEntityRepository',
+          provide: 'PermissaoEntityRepository',
           useValue: repository,
         },
       ],
     }).compile();
 
-    service = module.get<UsuarioService>(UsuarioService);
+    service = module.get<PermissaoService>(PermissaoService);
   });
 
   afterEach(() => {
@@ -31,26 +31,26 @@ describe('UsuarioService', () => {
 
   describe('create', () => {
     it('deve criar um registro', async () => {
-      const spyCreate = jest.spyOn(UsuarioEntity, 'create');
-      const spyExiste = jest.spyOn(service, 'existeUsuarioComEmail').mockResolvedValue(false);
+      const spyCreate = jest.spyOn(PermissaoEntity, 'create');
+      const spyExiste = jest.spyOn(service, 'existePermissaoComKey').mockResolvedValue(false);
 
-      const input = { email, senha };
+      const input = { key, descricao };
       await service.create(input);
       expect(spyCreate).toHaveBeenCalled();
-      expect(spyExiste).toHaveBeenCalledWith(input.email);
+      expect(spyExiste).toHaveBeenCalledWith(input.key);
       expect(repository.save).toHaveBeenCalled();
     });
 
-    it('não deve permitir criar mais de um usuario com mesmo e-mail', async () => {
-      const input = { email, senha };
+    it('não deve permitir criar mais de uma permissão com a mesma key', async () => {
+      const input = { key, descricao };
 
-      jest.spyOn(service, 'existeUsuarioComEmail').mockResolvedValue(true);
+      jest.spyOn(service, 'existePermissaoComKey').mockResolvedValue(true);
       try {
         await service.create(input);
         throw new Error('Não falhou!');
       } catch (error) {
         expect(error).toHaveProperty('message');
-        expect(error.message).toContain('Já existe usuário cadastrado com este e-mail!');
+        expect(error.message).toContain('Já existe permissão cadastrada com esta key!');
       }
     });
   });
@@ -70,7 +70,7 @@ describe('UsuarioService', () => {
       expect(retorno).toBeDefined();
       expect(retorno).toEqual({ id });
 
-      const camposParaRetornar = ['id', 'ativo', 'email'];
+      const camposParaRetornar = ['id', 'key', 'descricao'];
       expect(repository.findOne).toHaveBeenCalledWith({
         select: camposParaRetornar,
         where: { id },
@@ -84,7 +84,7 @@ describe('UsuarioService', () => {
         throw new Error('Não falhou!');
       } catch (error) {
         expect(error).toHaveProperty('message');
-        expect(error.message).toContain('Usuário não encontrado!');
+        expect(error.message).toContain('Permissão não encontrada!');
       }
     });
   });
@@ -92,7 +92,7 @@ describe('UsuarioService', () => {
   describe('update', () => {
     it('deve alterar um registro', async () => {
       jest.spyOn(repository, 'findOneBy').mockResolvedValue({ id });
-      const input = { ativo: false };
+      const input = { key, descricao };
       await service.update(id, input);
       expect(repository.findOneBy).toHaveBeenCalledWith({ id });
       expect(repository.merge).toHaveBeenCalled();
@@ -102,12 +102,12 @@ describe('UsuarioService', () => {
     it('deve levantar uma exceção quando registro não exisitir ao editar', async () => {
       jest.spyOn(repository, 'findOneBy').mockResolvedValue(null);
       try {
-        const input = { ativo: false };
+        const input = { key, descricao };
         await service.update(id, input);
         throw new Error('Não falhou!');
       } catch (error) {
         expect(error).toHaveProperty('message');
-        expect(error.message).toContain('Usuário não encontrado!');
+        expect(error.message).toContain('Permissão não encontrada!');
       }
     });
   });
@@ -119,18 +119,18 @@ describe('UsuarioService', () => {
     });
   });
 
-  describe('existeUsuarioComEmail', () => {
-    it('deve retornar true quando o e-mail já existir no banco', async () => {
+  describe('existePermissaoComKey', () => {
+    it('deve retornar true quando a key já existir no banco', async () => {
       jest.spyOn(repository, 'find').mockResolvedValue([{ id }]);
-      const retorno = await service.existeUsuarioComEmail(email);
+      const retorno = await service.existePermissaoComKey(key);
       expect(retorno).toBe(true);
     });
 
-    it('deve retornar false quando o e-mail não existir no banco', async () => {
+    it('deve retornar false quando a key não existir no banco', async () => {
       const spy = jest.spyOn(repository, 'find').mockResolvedValue([]);
-      const retorno = await service.existeUsuarioComEmail(email);
+      const retorno = await service.existePermissaoComKey(key);
       expect(retorno).toBe(false);
-      expect(spy).toHaveBeenCalledWith({ select: ['id'], where: { email } });
+      expect(spy).toHaveBeenCalledWith({ select: ['id'], where: { key } });
     });
   });
 });

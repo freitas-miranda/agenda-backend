@@ -3,8 +3,8 @@ import { Senha } from './senha.entity';
 
 @Entity({ name: 'usuario' })
 export class UsuarioEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
   ativo: boolean;

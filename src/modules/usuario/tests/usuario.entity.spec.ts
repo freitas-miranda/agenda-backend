@@ -1,6 +1,6 @@
 import { UsuarioEntity } from '../entities/usuario.entity';
 
-const id = 'ID123';
+const id = 123;
 const email = 'alan@miranda.com';
 const senhaAberta = '12345678';
 const senhaHash = 'H12345678';

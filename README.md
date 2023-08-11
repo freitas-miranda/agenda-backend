@@ -48,18 +48,19 @@ Sempre que precisar encontrar um profissional como por exemplo um cabeleireiro, 
 
 ```bash
 # Adicionar um novo modulo ao projeto
-$ nest g resource /modules/meu_modulo
+$ npx nest g resource /modules/meu_modulo
 ```
 
-## 🔀Roadmap
+## 🔀 Roadmap
 
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
+- [x] Criar o módulo usuários
+- [ ] Criar o módulo grupo de usuários
+- [ ] Criar o módulo permissões
+- [ ] Relacionar usuários ao grupo
+- [ ] Relacionar permissões ao grupo
+- [ ] Implantar segurança da API
+    - [ ] Autenticação dos usuários (Login)
+    - [ ] Autorização de rotas (Permissões)
 
 ## © Licença
 Distribuído sob a licença MIT. Veja `LICENSE.txt` para mais informações.

@@ -6,7 +6,7 @@ const mockService = {
   findAll: jest.fn(),
   findOne: jest.fn(),
   update: jest.fn(),
-  delete: jest.fn(),
+  remove: jest.fn(),
 };
 
 const mockRepository = {

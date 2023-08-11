@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, ParseIntPipe } from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
@@ -18,19 +18,19 @@ export class UsuarioController {
   }
 
   @Get(':id')
-  async findOne(@Param('id', new ParseUUIDPipe()) id: string) {
+  async findOne(@Param('id', new ParseIntPipe()) id: number) {
     return this.usuarioService.findOne(id);
   }
 
   @Patch(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async update(@Param('id', new ParseUUIDPipe()) id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
+  async update(@Param('id', new ParseIntPipe()) id: number, @Body() updateUsuarioDto: UpdateUsuarioDto) {
     await this.usuarioService.update(id, updateUsuarioDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async delete(@Param('id', new ParseUUIDPipe()) id: string) {
-    await this.usuarioService.delete(id);
+  async remove(@Param('id', new ParseIntPipe()) id: number) {
+    await this.usuarioService.remove(id);
   }
 }

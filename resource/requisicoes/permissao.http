@@ -1,0 +1,33 @@
+### Listar permissão
+GET http://localhost:3000/api/v1/permissao
+
+
+
+### Exibir permissão
+GET http://localhost:3000/api/v1/permissao/1
+
+
+
+### Criar permissão
+POST http://localhost:3000/api/v1/permissao
+Content-Type: application/json
+
+{
+  "key": "admin_all",
+  "descricao": "Pesmissão para admin"
+} 
+  
+
+
+### Alterar permissão
+PATCH http://localhost:3000/api/v1/permissao/1
+Content-Type: application/json
+
+{
+  "descricao": "Permissão alterada"
+}
+
+
+
+###  Deletar permissão
+DELETE http://localhost:3000/api/v1/permissao/2
