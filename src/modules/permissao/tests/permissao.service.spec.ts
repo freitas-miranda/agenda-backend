@@ -93,7 +93,11 @@ describe('PermissaoService', () => {
     it('deve alterar um registro', async () => {
       jest.spyOn(repository, 'findOneBy').mockResolvedValue({ id });
       const input = { key, descricao };
-      await service.update(id, input);
+
+      const retorno = await service.update(id, input);
+      expect(retorno).toBeDefined();
+      expect(retorno.mensagem).toEqual('Alterado com sucesso!');
+
       expect(repository.findOneBy).toHaveBeenCalledWith({ id });
       expect(repository.merge).toHaveBeenCalled();
       expect(repository.save).toHaveBeenCalled();
@@ -114,7 +118,10 @@ describe('PermissaoService', () => {
 
   describe('remove', () => {
     it('deve remover um registro', async () => {
-      service.remove(id);
+      const retorno = await service.remove(id);
+      expect(retorno).toBeDefined();
+      expect(retorno.mensagem).toEqual('Excluído com sucesso!');
+
       expect(repository.softDelete).toHaveBeenCalledWith(id);
     });
   });

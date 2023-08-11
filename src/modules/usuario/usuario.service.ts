@@ -43,10 +43,14 @@ export class UsuarioService {
     this.usuarioRepository.merge(registro, updateUsuarioDto);
 
     await this.usuarioRepository.save(registro);
+
+    return { mensagem: 'Alterado com sucesso!' };
   }
 
   async remove(id: number) {
     await this.usuarioRepository.softDelete(id);
+
+    return { mensagem: 'Excluído com sucesso!' };
   }
 
   async existeUsuarioComEmail(email: string): Promise<boolean> {

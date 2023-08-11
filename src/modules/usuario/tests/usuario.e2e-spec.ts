@@ -104,9 +104,9 @@ describe('Usuario (e2e)', () => {
       .patch('/api/v1/usuario/' + params['id'])
       .set('Authorization', 'Bearer ' + access_token)
       .send({ ativo: novoAtivo })
-      .expect(HttpStatus.NO_CONTENT)
+      .expect(HttpStatus.OK)
       .then((value) => {
-        expect(value.body).toEqual({});
+        expect(value.body).toEqual({ mensagem: 'Alterado com sucesso!' });
       });
 
     return request(app.getHttpServer())
@@ -122,9 +122,9 @@ describe('Usuario (e2e)', () => {
     return request(app.getHttpServer())
       .delete('/api/v1/usuario/' + params['id'])
       .set('Authorization', 'Bearer ' + access_token)
-      .expect(HttpStatus.NO_CONTENT)
+      .expect(HttpStatus.OK)
       .then((value) => {
-        expect(value.body).toEqual({});
+        expect(value.body).toEqual({ mensagem: 'Excluído com sucesso!' });
       });
   });
 

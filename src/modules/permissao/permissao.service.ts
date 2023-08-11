@@ -43,10 +43,14 @@ export class PermissaoService {
     this.permissaoRepository.merge(registro, updatePermissaoDto);
 
     await this.permissaoRepository.save(registro);
+
+    return { mensagem: 'Alterado com sucesso!' };
   }
 
   async remove(id: number) {
     await this.permissaoRepository.softDelete(id);
+
+    return { mensagem: 'Excluído com sucesso!' };
   }
 
   async existePermissaoComKey(key: string): Promise<boolean> {

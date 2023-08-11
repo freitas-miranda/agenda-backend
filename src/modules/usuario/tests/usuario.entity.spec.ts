@@ -7,8 +7,8 @@ const senhaHash = 'H12345678';
 const senhaSalt = 'S12345678';
 const ativo = true;
 
-describe('Usuario', () => {
-  it('Deve criar um novo usuário', async () => {
+describe('UsuarioEntity', () => {
+  it('deve criar um novo usuário', async () => {
     const usuario = UsuarioEntity.create(email, senhaAberta);
 
     expect(usuario.ativo).toEqual(ativo);
@@ -17,7 +17,7 @@ describe('Usuario', () => {
     expect(usuario.senhaSalt).toBeDefined();
   });
 
-  it('Deve instanciar um usuário já criado', async () => {
+  it('deve instanciar um usuário já criado', async () => {
     const usuario = new UsuarioEntity({ id, ativo, email, senhaHash, senhaSalt });
 
     expect(usuario.id).toEqual(id);
