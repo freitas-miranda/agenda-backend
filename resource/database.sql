@@ -1,9 +1,13 @@
--- Active: 1690573514770@@mariadb@3306@agenda_test
+-- Active: 1690573514770@@mariadb@3306@agenda
 create database `agenda`;
 create database `agenda_test`;
 
-
 select * from `usuario`;
+select * from `grupo_usuario`;
+select * from `permissao`;
+
+
+
 drop table if exists `usuario`;
 create table `usuario` (
   `id`         bigint(20)    not null auto_increment,
@@ -18,7 +22,17 @@ create table `usuario` (
 ) engine = innodb default charset = utf8mb4 collate = utf8mb4_general_ci;
 
 
-select * from `permissao`;
+drop table if exists `grupo_usuario`;
+create table `grupo_usuario` (
+  `id`         bigint(20)    not null auto_increment,
+  `descricao`  varchar(255)  not null comment 'Descrição do grupo de usuário',
+  `created_at` datetime(6)   not null default current_timestamp(6),
+  `updated_at` datetime(6)   default null on update current_timestamp(6),
+  `deleted_at` datetime(6)   default null,
+  primary key (`id`)
+) engine = innodb default charset = utf8mb4 collate = utf8mb4_general_ci;
+
+
 drop table if exists `permissao`;
 create table `permissao` (
   `id`         bigint(20)    not null auto_increment,

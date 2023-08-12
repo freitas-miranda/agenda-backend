@@ -1,0 +1,44 @@
+### Listar grupo de usuários
+GET http://localhost:3000/api/v1/grupo-usuario
+
+
+### Listar grupo de usuários filtrando pela descrição
+GET http://localhost:3000/api/v1/grupo-usuario?descricao=admin
+
+
+
+### Exibir grupo de usuários
+GET http://localhost:3000/api/v1/grupo-usuario/1
+
+
+
+### Criar grupo de usuários - Administradores
+POST http://localhost:3000/api/v1/grupo-usuario
+Content-Type: application/json
+
+{
+  "descricao": "Administradores"
+} 
+
+### Criar grupo de usuários - Clientes
+POST http://localhost:3000/api/v1/grupo-usuario
+Content-Type: application/json
+
+{
+  "descricao": "Clientes"
+} 
+  
+
+
+### Alterar grupo de usuários
+PATCH http://localhost:3000/api/v1/grupo-usuario/2
+Content-Type: application/json
+
+{
+  "descricao": "Clientes +1"
+}
+
+
+
+###  Deletar grupo de usuários
+DELETE http://localhost:3000/api/v1/grupo-usuario/2

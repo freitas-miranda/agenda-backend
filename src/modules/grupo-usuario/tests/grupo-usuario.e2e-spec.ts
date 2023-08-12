@@ -4,11 +4,10 @@ import { HttpStatus, INestApplication } from '@nestjs/common';
 import { AppModule } from '@src/app.module';
 
 const params = {
-  key: 'admin',
-  descricao: 'Descrição da permissão',
+  descricao: 'Administradores',
 };
 
-describe('Permissão (e2e)', () => {
+describe('GrupoUsuario (e2e)', () => {
   let app: INestApplication;
   let access_token: string;
 
@@ -21,23 +20,23 @@ describe('Permissão (e2e)', () => {
     await app.init();
   });
 
-  it('[POST /api/v1/permissao] Criar uma permissão', async () => {
-    // Localizar permissão pela key
-    const permissao = await request(app.getHttpServer())
-      .get('/api/v1/permissao?key=' + params.key)
+  it('[POST /api/v1/grupo-usuario] Criar um grupo de usuário', async () => {
+    // Localizar grupo usuário pela descrição
+    const registros = await request(app.getHttpServer())
+      .get('/api/v1/grupo-usuario?descricao=' + params.descricao)
       .set('Authorization', 'Bearer ' + access_token);
 
-    // Remover permissão de teste caso exista
-    for (const permissaoExistente of permissao.body) {
-      if (permissaoExistente) {
+    // Remover o grupo de usuário de teste caso exista
+    for (const item of registros.body) {
+      if (item) {
         await request(app.getHttpServer())
-          .delete('/api/v1/permissao/' + permissaoExistente.id)
+          .delete('/api/v1/grupo-usuario/' + item.id)
           .set('Authorization', 'Bearer ' + access_token);
       }
     }
 
     const retorno = await request(app.getHttpServer())
-      .post('/api/v1/permissao')
+      .post('/api/v1/grupo-usuario')
       .set('Authorization', 'Bearer ' + access_token)
       .send(params)
       .expect(HttpStatus.CREATED);
@@ -46,54 +45,59 @@ describe('Permissão (e2e)', () => {
     expect(retorno.body.id).toBeTruthy();
     params['id'] = retorno.body.id;
 
-    expect(retorno.body).not.toHaveProperty('key');
     expect(retorno.body).not.toHaveProperty('descricao');
   });
 
-  it('[GET /api/v1/permissao/:id] Exibir uma permissão', async () => {
+  it('[GET /api/v1/grupo-usuario/:id] Exibir um grupo de usuário', async () => {
     const retorno = await request(app.getHttpServer())
-      .get('/api/v1/permissao/' + params['id'])
+      .get('/api/v1/grupo-usuario/' + params['id'])
       .set('Authorization', 'Bearer ' + access_token)
       .expect(HttpStatus.OK);
 
-    const permissao = retorno.body;
-    expect(permissao).toBeDefined();
-    expect(permissao.id).toEqual(params['id']);
-    expect(permissao.descricao).toEqual(params.descricao);
+    const registro = retorno.body;
+    expect(registro).toBeDefined();
+    expect(registro.id).toEqual(params['id']);
+    expect(registro.descricao).toEqual(params.descricao);
   });
 
-  it('[GET /api/v1/permissao] Listar todas permissões', async () => {
+  it('[GET /api/v1/grupo-usuario] Listar todos grupos de usuários', async () => {
     const retorno = await request(app.getHttpServer())
-      .get('/api/v1/permissao')
+      .get('/api/v1/grupo-usuario')
       .set('Authorization', 'Bearer ' + access_token)
       .expect(HttpStatus.OK);
 
     expect(retorno.body.length).toBeGreaterThan(0);
-    const permissao = retorno.body[0];
-    expect(permissao).toHaveProperty('id');
-    expect(permissao).toHaveProperty('key');
-    expect(permissao).toHaveProperty('descricao');
+    const registro = retorno.body[0];
+    expect(registro).toHaveProperty('id');
+    expect(registro).toHaveProperty('descricao');
   });
 
-  it('[GET /api/v1/permissao?key=???] Pesquisar uma permissão pela key', async () => {
+  it('[GET /api/v1/grupo-usuario?descricao=???] Pesquisar um usuário pela descrição', async () => {
+    const descricaoGrupoParaPesquisar = 'Grupo ABC123 pesquisa';
+    await request(app.getHttpServer())
+      .post('/api/v1/grupo-usuario')
+      .set('Authorization', 'Bearer ' + access_token)
+      .send({ descricao: descricaoGrupoParaPesquisar });
+
+    const paramFilter = 'ABC123';
     const retorno = await request(app.getHttpServer())
-      .get('/api/v1/permissao?key=' + params.key)
+      .get('/api/v1/grupo-usuario?descricao=' + paramFilter)
       .set('Authorization', 'Bearer ' + access_token)
       .expect(HttpStatus.OK);
 
-    const permissoes = retorno.body;
-    expect(permissoes.length).toEqual(1);
+    const registros = retorno.body;
+    expect(registros.length).toEqual(1);
 
-    const permissao = permissoes[0];
-    expect(permissao).toBeDefined();
-    expect(permissao.key).toEqual(params.key);
+    const registro = registros[0];
+    expect(registro).toBeDefined();
+    expect(registro.descricao).toEqual(descricaoGrupoParaPesquisar);
   });
 
-  it('[PATCH /api/v1/permissao/:id] Alterar uma permissão', async () => {
-    const novaDescricao = 'Nova descricão da permissão';
+  it('[PATCH /api/v1/grupo-usuario/:id] Alterar um grupo de usuário', async () => {
+    const novaDescricao = 'Nova descrição do grupo de usuários';
 
     await request(app.getHttpServer())
-      .patch('/api/v1/permissao/' + params['id'])
+      .patch('/api/v1/grupo-usuario/' + params['id'])
       .set('Authorization', 'Bearer ' + access_token)
       .send({ descricao: novaDescricao })
       .expect(HttpStatus.OK)
@@ -102,7 +106,7 @@ describe('Permissão (e2e)', () => {
       });
 
     return request(app.getHttpServer())
-      .get('/api/v1/permissao/' + params['id'])
+      .get('/api/v1/grupo-usuario/' + params['id'])
       .set('Authorization', 'Bearer ' + access_token)
       .expect(HttpStatus.OK)
       .then((value) => {
@@ -110,9 +114,9 @@ describe('Permissão (e2e)', () => {
       });
   });
 
-  it('[DELETE /api/v1/permissao/:id] Deletar uma permissão', async () => {
+  it('[DELETE /api/v1/grupo-usuario/:id] Deletar um grupo de usuário', async () => {
     return request(app.getHttpServer())
-      .delete('/api/v1/permissao/' + params['id'])
+      .delete('/api/v1/grupo-usuario/' + params['id'])
       .set('Authorization', 'Bearer ' + access_token)
       .expect(HttpStatus.OK)
       .then((value) => {
