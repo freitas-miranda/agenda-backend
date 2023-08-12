@@ -1,6 +1,6 @@
--- Active: 1690573514770@@mariadb@3306@marcaja
-create database `marcaja`;
-create database `marcaja_test`;
+-- Active: 1690573514770@@mariadb@3306@agenda_test
+create database `agenda`;
+create database `agenda_test`;
 
 
 select * from `usuario`;

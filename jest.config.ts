@@ -15,6 +15,7 @@ export const configBase = {
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: '<rootDir>/',
   }),
+  slowTestThreshold: 15,
 };
 
 const config: Config = configBase;

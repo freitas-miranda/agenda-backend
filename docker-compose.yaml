@@ -3,7 +3,7 @@ version: '3'
 services:
   api:
     build: .
-    container_name: marcaja-api
+    container_name: agenda-api
     ports:
       - 3000:3000
     volumes:
@@ -13,5 +13,5 @@ services:
       - kong-net
 
 networks:
-    kong-net:
-      driver: bridge
+  kong-net:
+    external: true

@@ -35,8 +35,8 @@ Sempre que precisar encontrar um profissional como por exemplo um cabeleireiro, 
 
 ## 🚀 Instalação
 
-1. Baixe o repositório (`git clone git@github.com:freitas-miranda/marcaja-backend.git`)
-2. Navegue até a pasta do projeto (`cd marcaja-backend`)
+1. Baixe o repositório (`git clone git@github.com:freitas-miranda/agenda-backend.git`)
+2. Navegue até a pasta do projeto (`cd agenda-backend`)
 3. Copie e altere os arquivos de configurações conforme desejado
 4. Instale as dependências do projeto (`yarn install`)
 5. Verifique a cobertura dos testes (`yarn test:cov`)
