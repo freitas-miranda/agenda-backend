@@ -35,7 +35,8 @@ describe('PermissaoController', () => {
   });
 
   it('deve listar todos registros', async () => {
-    await controller.findAll();
+    const paramsFilter: any = {};
+    await controller.findAll(paramsFilter);
     expect(service.findAll).toHaveBeenCalled();
   });
 

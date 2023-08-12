@@ -57,7 +57,8 @@ describe('PermissaoService', () => {
 
   describe('findAll', () => {
     it('deve listar todos registros', async () => {
-      await service.findAll();
+      const paramsFilter: any = {};
+      await service.findAll(paramsFilter);
       expect(repository.find).toHaveBeenCalled();
     });
   });

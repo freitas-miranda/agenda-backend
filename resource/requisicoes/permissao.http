@@ -2,19 +2,35 @@
 GET http://localhost:3000/api/v1/permissao
 
 
+### Listar permissão filtrando pela key
+GET http://localhost:3000/api/v1/permissao?key=usuario_manutencao
+
+
+### Listar permissão filtrando pela descrição (%like%)
+GET http://localhost:3000/api/v1/permissao?descricao=grupo
+
 
 ### Exibir permissão
 GET http://localhost:3000/api/v1/permissao/1
 
 
 
-### Criar permissão
+### Criar permissão usuario_manutencao
 POST http://localhost:3000/api/v1/permissao
 Content-Type: application/json
 
 {
-  "key": "admin_all",
-  "descricao": "Pesmissão para admin"
+  "key": "usuario_manutencao",
+  "descricao": "Pesmissão para incluir, alterar, excluir usuário"
+} 
+
+### Criar permissão grupo_usuario_manutencao
+POST http://localhost:3000/api/v1/permissao
+Content-Type: application/json
+
+{
+  "key": "grupo_usuario_manutencao",
+  "descricao": "Pesmissão para incluir, alterar, excluir grupo de usuário"
 } 
   
 
@@ -24,7 +40,7 @@ PATCH http://localhost:3000/api/v1/permissao/1
 Content-Type: application/json
 
 {
-  "descricao": "Permissão alterada"
+  "descricao": "Pesmissão para incluir, alterar, excluir usuário +1"
 }
 
 

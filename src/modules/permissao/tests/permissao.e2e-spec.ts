@@ -75,18 +75,37 @@ describe('Permissão (e2e)', () => {
     expect(permissao).toHaveProperty('descricao');
   });
 
-  it('[GET /api/v1/permissao?key=???] Pesquisar uma permissão pela key', async () => {
-    const retorno = await request(app.getHttpServer())
-      .get('/api/v1/permissao?key=' + params.key)
+  it('[GET /api/v1/permissao?] Testar pesquisas da permissão', async () => {
+    const paramFilter = 'ABCP123';
+
+    const permissaoParaPesquisar = {
+      key: paramFilter,
+      descricao: `Permissão ${paramFilter} para pesquisar`,
+    };
+    await request(app.getHttpServer())
+      .post('/api/v1/permissao')
       .set('Authorization', 'Bearer ' + access_token)
-      .expect(HttpStatus.OK);
+      .send(permissaoParaPesquisar);
 
-    const permissoes = retorno.body;
-    expect(permissoes.length).toEqual(1);
+    await request(app.getHttpServer())
+      .get('/api/v1/permissao?key=' + paramFilter)
+      .set('Authorization', 'Bearer ' + access_token)
+      .expect(HttpStatus.OK)
+      .then((data) => {
+        expect(data.body.length).toEqual(1);
+        expect(data.body[0]).toBeDefined();
+        expect(data.body[0].key).toEqual(permissaoParaPesquisar.key);
+      });
 
-    const permissao = permissoes[0];
-    expect(permissao).toBeDefined();
-    expect(permissao.key).toEqual(params.key);
+    await request(app.getHttpServer())
+      .get('/api/v1/permissao?descricao=' + paramFilter)
+      .set('Authorization', 'Bearer ' + access_token)
+      .expect(HttpStatus.OK)
+      .then((data) => {
+        expect(data.body.length).toEqual(1);
+        expect(data.body[0]).toBeDefined();
+        expect(data.body[0].descricao).toEqual(permissaoParaPesquisar.descricao);
+      });
   });
 
   it('[PATCH /api/v1/permissao/:id] Alterar uma permissão', async () => {

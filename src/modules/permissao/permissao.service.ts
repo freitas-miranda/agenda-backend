@@ -3,13 +3,14 @@ import { CreatePermissaoDto } from './dto/create-permissao.dto';
 import { UpdatePermissaoDto } from './dto/update-permissao.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PermissaoEntity } from './entities/permissao.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
+import { FindPermissaoDto } from './dto/find-permissao.dto';
 
 @Injectable()
 export class PermissaoService {
   constructor(
     @InjectRepository(PermissaoEntity)
-    private readonly permissaoRepository: Repository<PermissaoEntity>
+    private readonly repository: Repository<PermissaoEntity>
   ) {}
 
   async create(createPermissaoDto: CreatePermissaoDto) {
@@ -19,16 +20,29 @@ export class PermissaoService {
     if (jaExiste) throw new BadRequestException('Já existe permissão cadastrada com esta key!');
 
     const permissao = PermissaoEntity.create(key, descricao);
-    const criado = await this.permissaoRepository.save(permissao);
+    const criado = await this.repository.save(permissao);
     return { id: criado?.id };
   }
 
-  async findAll() {
-    return this.permissaoRepository.find({ select: ['id', 'key', 'descricao'] });
+  async findAll(dto: FindPermissaoDto) {
+    const where: any = {};
+
+    if (dto.hasOwnProperty('key')) {
+      where.key = dto.key;
+    }
+
+    if (dto.hasOwnProperty('descricao')) {
+      where.descricao = Like(`%${dto.descricao}%`);
+    }
+
+    return this.repository.find({
+      select: ['id', 'key', 'descricao'],
+      where,
+    });
   }
 
   async findOne(id: number) {
-    const registro = await this.permissaoRepository.findOne({
+    const registro = await this.repository.findOne({
       select: ['id', 'key', 'descricao'],
       where: { id },
     });
@@ -37,24 +51,24 @@ export class PermissaoService {
   }
 
   async update(id: number, updatePermissaoDto: UpdatePermissaoDto) {
-    const registro = await this.permissaoRepository.findOneBy({ id });
+    const registro = await this.repository.findOneBy({ id });
     if (!registro) throw new NotFoundException('Permissão não encontrada!');
 
-    this.permissaoRepository.merge(registro, updatePermissaoDto);
+    this.repository.merge(registro, updatePermissaoDto);
 
-    await this.permissaoRepository.save(registro);
+    await this.repository.save(registro);
 
     return { mensagem: 'Alterado com sucesso!' };
   }
 
   async remove(id: number) {
-    await this.permissaoRepository.softDelete(id);
+    await this.repository.softDelete(id);
 
     return { mensagem: 'Excluído com sucesso!' };
   }
 
   async existePermissaoComKey(key: string): Promise<boolean> {
-    const registros = await this.permissaoRepository.find({
+    const registros = await this.repository.find({
       select: ['id'],
       where: { key },
     });
