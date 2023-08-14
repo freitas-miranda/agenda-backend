@@ -7,6 +7,7 @@ describe('PermissaoController', () => {
   let controller: PermissaoController;
   let service: PermissaoService;
 
+  const testsHelper = new TestsHelper();
   const id = 123;
 
   beforeEach(async () => {
@@ -15,7 +16,7 @@ describe('PermissaoController', () => {
       providers: [
         {
           provide: PermissaoService,
-          useValue: TestsHelper.mockService,
+          useValue: testsHelper.mockService(),
         },
       ],
     }).compile();

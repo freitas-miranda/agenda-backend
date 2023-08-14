@@ -7,13 +7,15 @@ describe('UsuarioController', () => {
   let controller: UsuarioController;
   let service: UsuarioService;
 
+  const testsHelper = new TestsHelper();
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsuarioController],
       providers: [
         {
           provide: UsuarioService,
-          useValue: TestsHelper.mockService,
+          useValue: testsHelper.mockService(),
         },
       ],
     }).compile();

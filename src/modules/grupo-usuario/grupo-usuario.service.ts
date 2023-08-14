@@ -76,7 +76,7 @@ export class GrupoUsuarioService {
     const { grupoUsuarioId, usuarioId } = dto;
 
     const relacionamento = GrupoUsuarioUsuarioEntity.create(grupoUsuarioId, usuarioId);
-    const criado = await this.grupoUsuarioRepository.save(relacionamento);
+    const criado = await this.grupoUsuarioUsuarioRepository.save(relacionamento);
 
     return {
       mensagem: 'Usuário adicionado ao grupo!',

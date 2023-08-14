@@ -8,10 +8,12 @@ describe('GrupoUsuarioService', () => {
   const id = 123;
   const descricao = 'Administradores';
 
+  const testsHelper = new TestsHelper();
+
   let service: GrupoUsuarioService;
-  const grupoUsuarioRepository = TestsHelper.mockRepository;
-  const grupoUsuarioUsuarioRepository = TestsHelper.mockRepository;
-  const grupoUsuarioPermissaoRepository = TestsHelper.mockRepository;
+  const grupoUsuarioRepository = testsHelper.mockRepository();
+  const grupoUsuarioUsuarioRepository = testsHelper.mockRepository();
+  const grupoUsuarioPermissaoRepository = testsHelper.mockRepository();
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({

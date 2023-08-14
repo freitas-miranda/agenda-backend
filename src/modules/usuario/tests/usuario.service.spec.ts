@@ -4,12 +4,13 @@ import { TestsHelper } from '@helpers/tests.helper';
 import { UsuarioEntity } from '../entities/usuario.entity';
 
 describe('UsuarioService', () => {
+  const testsHelper = new TestsHelper();
   const id = 123;
   const email = 'alan@miranda.com';
   const senha = '12345678';
 
   let service: UsuarioService;
-  const repository = TestsHelper.mockRepository;
+  const repository = testsHelper.mockRepository();
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({

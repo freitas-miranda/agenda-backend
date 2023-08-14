@@ -4,12 +4,13 @@ import { TestsHelper } from '@helpers/tests.helper';
 import { PermissaoEntity } from '../entities/permissao.entity';
 
 describe('PermissaoService', () => {
+  const testsHelper = new TestsHelper();
   const id = 123;
   const key = 'admin';
   const descricao = 'Descricação da permissão';
 
   let service: PermissaoService;
-  const repository = TestsHelper.mockRepository;
+  const repository = testsHelper.mockRepository();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
