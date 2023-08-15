@@ -100,6 +100,10 @@ describe('GrupoUsuario (e2e)', () => {
     const registro = retorno.body;
     expect(registro).toBeDefined();
     expect(registro.id).toEqual(paramsGrupo['id']);
+    expect(registro).toHaveProperty('descricao');
+    expect(registro).toHaveProperty('usuarios');
+    expect(registro).toHaveProperty('permissoes');
+
     expect(registro.descricao).toEqual(paramsGrupo.descricao);
   });
 
@@ -157,16 +161,6 @@ describe('GrupoUsuario (e2e)', () => {
       });
   });
 
-  it('[DELETE /api/v1/grupo-usuario/:id] Deletar um grupo de usuário', async () => {
-    return request(app.getHttpServer())
-      .delete('/api/v1/grupo-usuario/' + paramsGrupo['id'])
-      .set('Authorization', 'Bearer ' + access_token)
-      .expect(HttpStatus.OK)
-      .then((value) => {
-        expect(value.body).toEqual({ mensagem: 'Excluído com sucesso!' });
-      });
-  });
-
   it('[POST /api/v1/grupo-usuario/:id/usuario/:usuarioId] Adicionar um usuário no grupo', async () => {
     await request(app.getHttpServer())
       .post('/api/v1/grupo-usuario/' + paramsGrupo['id'] + '/usuario/' + usuario.id)
@@ -177,6 +171,18 @@ describe('GrupoUsuario (e2e)', () => {
         expect(retorno.body.mensagem).toContain('Usuário adicionado ao grupo!');
         expect(retorno.body.id).toBeTruthy();
       });
+
+    await request(app.getHttpServer())
+      .get('/api/v1/grupo-usuario/' + paramsGrupo['id'])
+      .set('Authorization', 'Bearer ' + access_token)
+      .expect(HttpStatus.OK)
+      .then((retorno) => {
+        expect(retorno.body).toHaveProperty('usuarios');
+
+        const usuarios = retorno.body.usuarios;
+        const adicionado = usuarios.find((usuario) => usuario.id == usuario.id);
+        expect(adicionado).toBeDefined();
+      });
   });
 
   it('[DELETE /api/v1/grupo-usuario/:id/usuario/:usuarioId] Adicionar um usuário no grupo', async () => {
@@ -186,6 +192,18 @@ describe('GrupoUsuario (e2e)', () => {
       .expect(HttpStatus.OK)
       .then((retorno) => {
         expect(retorno.body.mensagem).toContain('Usuário removido do grupo!');
+      });
+
+    await request(app.getHttpServer())
+      .get('/api/v1/grupo-usuario/' + paramsGrupo['id'])
+      .set('Authorization', 'Bearer ' + access_token)
+      .expect(HttpStatus.OK)
+      .then((retorno) => {
+        expect(retorno.body).toHaveProperty('usuarios');
+
+        const usuarios = retorno.body.usuarios;
+        const adicionado = usuarios.find((usuario) => usuario.id == usuario.id);
+        expect(adicionado).toBeUndefined();
       });
   });
 
@@ -199,6 +217,18 @@ describe('GrupoUsuario (e2e)', () => {
         expect(retorno.body.mensagem).toContain('Permissão adicionada ao grupo!');
         expect(retorno.body.id).toBeTruthy();
       });
+
+    await request(app.getHttpServer())
+      .get('/api/v1/grupo-usuario/' + paramsGrupo['id'])
+      .set('Authorization', 'Bearer ' + access_token)
+      .expect(HttpStatus.OK)
+      .then((retorno) => {
+        expect(retorno.body).toHaveProperty('permissoes');
+
+        const permissoes = retorno.body.permissoes;
+        const adicionado = permissoes.find((permissao) => permissao.id == permissao.id);
+        expect(adicionado).toBeDefined();
+      });
   });
 
   it('[DELETE /api/v1/grupo-usuario/:id/permissao/:permissaoId] Adicionar um usuário no grupo', async () => {
@@ -208,6 +238,28 @@ describe('GrupoUsuario (e2e)', () => {
       .expect(HttpStatus.OK)
       .then((retorno) => {
         expect(retorno.body.mensagem).toContain('Permissão removida do grupo!');
+      });
+
+    await request(app.getHttpServer())
+      .get('/api/v1/grupo-usuario/' + paramsGrupo['id'])
+      .set('Authorization', 'Bearer ' + access_token)
+      .expect(HttpStatus.OK)
+      .then((retorno) => {
+        expect(retorno.body).toHaveProperty('permissoes');
+
+        const permissoes = retorno.body.permissoes;
+        const adicionado = permissoes.find((permissao) => permissao.id == permissao.id);
+        expect(adicionado).toBeUndefined();
+      });
+  });
+
+  it('[DELETE /api/v1/grupo-usuario/:id] Deletar um grupo de usuário', async () => {
+    return request(app.getHttpServer())
+      .delete('/api/v1/grupo-usuario/' + paramsGrupo['id'])
+      .set('Authorization', 'Bearer ' + access_token)
+      .expect(HttpStatus.OK)
+      .then((value) => {
+        expect(value.body).toEqual({ mensagem: 'Excluído com sucesso!' });
       });
   });
 

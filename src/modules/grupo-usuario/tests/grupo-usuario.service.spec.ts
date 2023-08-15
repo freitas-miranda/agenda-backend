@@ -78,17 +78,26 @@ describe('GrupoUsuarioService', () => {
 
   describe('findOne', () => {
     it('deve exibir um registro', async () => {
-      jest.spyOn(grupoUsuarioRepository, 'findOne').mockResolvedValue({ id });
+      jest.spyOn(grupoUsuarioRepository, 'findOne').mockResolvedValue({ id, descricao });
+
+      const spyUsuarios = jest.spyOn(service, 'usuariosDoGrupo');
+      const spyPermissoes = jest.spyOn(service, 'permissoesDoGrupo');
 
       const retorno = await service.findOne(id);
       expect(retorno).toBeDefined();
-      expect(retorno).toEqual({ id });
+      expect(retorno).toHaveProperty('id');
+      expect(retorno).toHaveProperty('descricao');
+      expect(retorno).toHaveProperty('usuarios');
+      expect(retorno).toHaveProperty('permissoes');
 
       const camposParaRetornar = ['id', 'descricao'];
       expect(grupoUsuarioRepository.findOne).toHaveBeenCalledWith({
         select: camposParaRetornar,
         where: { id },
       });
+
+      expect(spyUsuarios).toHaveBeenCalledWith(id);
+      expect(spyPermissoes).toHaveBeenCalledWith(id);
     });
 
     it('deve levantar uma exceção quando registro não exisitir ao exibir', async () => {

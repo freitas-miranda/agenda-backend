@@ -48,12 +48,20 @@ export class GrupoUsuarioService {
   }
 
   async findOne(id: number) {
-    const registro = await this.grupoUsuarioRepository.findOne({
+    const grupoUsuario = await this.grupoUsuarioRepository.findOne({
       select: ['id', 'descricao'],
       where: { id },
     });
-    if (!registro) throw new NotFoundException('Grupo de usuário não encontrado!');
-    return registro;
+    if (!grupoUsuario) throw new NotFoundException('Grupo de usuário não encontrado!');
+
+    const usuarios = await this.usuariosDoGrupo(grupoUsuario.id);
+    const permissoes = await this.permissoesDoGrupo(grupoUsuario.id);
+
+    return {
+      ...grupoUsuario,
+      usuarios,
+      permissoes,
+    };
   }
 
   async update(id: number, dto: UpdateGrupoUsuarioDto) {
@@ -121,4 +129,46 @@ export class GrupoUsuarioService {
 
     return registros?.length > 0;
   }
+
+  async usuariosDoGrupo(grupoUsuarioId: number): Promise<[Usuarios]> {
+    return this.grupoUsuarioUsuarioRepository.query(
+      `
+      select u.id
+           , u.email 
+        from grupo_usuario_usuario guu 
+       inner join usuario u 
+          on u.id = guu.usuario_id 
+       where guu.deleted_at is null
+         and guu.grupo_usuario_id = ?;     
+    `,
+      [grupoUsuarioId]
+    );
+  }
+
+  async permissoesDoGrupo(grupoUsuarioId: number): Promise<[Permissoes]> {
+    return this.grupoUsuarioPermissaoRepository.query(
+      `
+      select p.id
+           , p.key
+           , p.descricao     
+        from grupo_usuario_permissao gup  
+       inner join permissao p
+          on p.id = gup.permissao_id 
+       where gup.deleted_at is null
+         and gup.grupo_usuario_id = ?;     
+    `,
+      [grupoUsuarioId]
+    );
+  }
 }
+
+type Usuarios = {
+  id: number;
+  email: string;
+};
+
+type Permissoes = {
+  id: number;
+  key: string;
+  descricao: string;
+};

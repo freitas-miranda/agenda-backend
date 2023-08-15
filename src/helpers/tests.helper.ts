@@ -23,6 +23,7 @@ export class TestsHelper {
       merge: jest.fn(),
       save: jest.fn(),
       softDelete: jest.fn(),
+      query: jest.fn(),
       ...add,
     };
   }
