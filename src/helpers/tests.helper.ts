@@ -2,19 +2,19 @@ export class TestsHelper {
   private item: any = { id: 'abc' };
   private list: any = [this.item];
 
-  mockService() {
+  mockService(add?: any) {
     return {
       create: jest.fn(),
       findAll: jest.fn(),
       findOne: jest.fn(),
       update: jest.fn(),
       remove: jest.fn(),
+      ...add,
     };
   }
 
-  mockRepository() {
+  mockRepository(add?: any) {
     return {
-      name: 'mockRepository',
       create: jest.fn(() => this.item),
       find: jest.fn(() => this.list),
       findOneOrFail: jest.fn(() => this.item),
@@ -23,6 +23,7 @@ export class TestsHelper {
       merge: jest.fn(),
       save: jest.fn(),
       softDelete: jest.fn(),
+      ...add,
     };
   }
 }

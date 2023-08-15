@@ -15,7 +15,10 @@ describe('GrupoUsuarioController', () => {
       providers: [
         {
           provide: GrupoUsuarioService,
-          useValue: testsHelper.mockService(),
+          useValue: testsHelper.mockService({
+            adicionarPermissao: jest.fn(),
+            removerPermissao: jest.fn(),
+          }),
         },
       ],
     }).compile();
@@ -58,5 +61,25 @@ describe('GrupoUsuarioController', () => {
     const id = 123;
     controller.remove(id);
     expect(service.remove).toHaveBeenCalledWith(id);
+  });
+
+  it('deve relacionar uma permissao ao grupo de usuários', async () => {
+    const input = {
+      grupoUsuarioId: 1,
+      permissaoId: 1,
+    };
+    await controller.adicionarPermissao(input.grupoUsuarioId, input.permissaoId);
+    expect(service.adicionarPermissao).toHaveBeenCalled();
+    expect(service.adicionarPermissao).toHaveBeenCalledWith(input);
+  });
+
+  it('deve remover uma permissao do grupo de usuários', async () => {
+    const input = {
+      grupoUsuarioId: 1,
+      permissaoId: 1,
+    };
+    await controller.removerPermissao(input.grupoUsuarioId, input.permissaoId);
+    expect(service.removerPermissao).toHaveBeenCalled();
+    expect(service.removerPermissao).toHaveBeenCalledWith(input);
   });
 });

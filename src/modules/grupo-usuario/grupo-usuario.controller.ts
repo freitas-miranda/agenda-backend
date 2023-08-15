@@ -3,6 +3,7 @@ import { GrupoUsuarioService } from './grupo-usuario.service';
 import { CreateGrupoUsuarioDto } from './dto/create-grupo-usuario.dto';
 import { UpdateGrupoUsuarioDto } from './dto/update-grupo-usuario.dto';
 import { FindGrupoUsuarioDto } from './dto/find-grupo-usuario.dto';
+import { GrupoUsuarioPermissaoDto } from './dto/grupo-usuario-permissao.dto';
 
 @Controller('api/v1/grupo-usuario')
 export class GrupoUsuarioController {
@@ -31,5 +32,27 @@ export class GrupoUsuarioController {
   @Delete(':id')
   async remove(@Param('id', new ParseIntPipe()) id: number) {
     return this.service.remove(id);
+  }
+
+  @Post(':id/permissao/:permissaoId')
+  async adicionarPermissao(
+    @Param('id', new ParseIntPipe()) grupoUsuarioId: number,
+    @Param('permissaoId', new ParseIntPipe()) permissaoId: number
+  ) {
+    return this.service.adicionarPermissao({
+      grupoUsuarioId,
+      permissaoId,
+    });
+  }
+
+  @Delete(':id/permissao/:permissaoId')
+  async removerPermissao(
+    @Param('id', new ParseIntPipe()) grupoUsuarioId: number,
+    @Param('permissaoId', new ParseIntPipe()) permissaoId: number
+  ) {
+    return this.service.removerPermissao({
+      grupoUsuarioId,
+      permissaoId,
+    });
   }
 }
