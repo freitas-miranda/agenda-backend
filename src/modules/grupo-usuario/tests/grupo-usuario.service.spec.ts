@@ -3,6 +3,7 @@ import { GrupoUsuarioService } from '../grupo-usuario.service';
 import { TestsHelper } from '@helpers/tests.helper';
 import { GrupoUsuarioEntity } from '../entities/grupo-usuario.entity';
 import { GrupoUsuarioUsuarioEntity } from '../entities/grupo-usuario-usuario.entity';
+import { GrupoUsuarioPermissaoEntity } from '../entities/grupo-usuario-permissao.entity';
 
 describe('GrupoUsuarioService', () => {
   const id = 123;
@@ -167,6 +168,37 @@ describe('GrupoUsuarioService', () => {
       expect(retorno.mensagem).toContain('Usuário removido do grupo!');
 
       expect(grupoUsuarioUsuarioRepository.softDelete).toHaveBeenCalled();
+    });
+  });
+
+  describe('grupo x permissão', () => {
+    it('deve adicionar uma permissão ao grupo', async () => {
+      const spyRelacionamento = jest.spyOn(GrupoUsuarioPermissaoEntity, 'create');
+      const input = {
+        grupoUsuarioId: 1,
+        permissaoId: 1,
+      };
+
+      const retorno = await service.adicionarPermissao(input);
+      expect(retorno).toBeDefined();
+      expect(retorno.mensagem).toContain('Permissão adicionada ao grupo!');
+      expect(retorno).toHaveProperty('id');
+
+      expect(spyRelacionamento).toHaveBeenCalled();
+      expect(grupoUsuarioPermissaoRepository.save).toHaveBeenCalled();
+    });
+
+    it('deve remover uma permissão do grupo', async () => {
+      const input = {
+        grupoUsuarioId: 1,
+        permissaoId: 1,
+      };
+
+      const retorno = await service.removerPermissao(input);
+      expect(retorno).toBeDefined();
+      expect(retorno.mensagem).toContain('Permissão removida do grupo!');
+
+      expect(grupoUsuarioPermissaoRepository.softDelete).toHaveBeenCalled();
     });
   });
 

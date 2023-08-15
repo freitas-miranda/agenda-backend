@@ -8,6 +8,7 @@ import { GrupoUsuarioUsuarioEntity } from './entities/grupo-usuario-usuario.enti
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
 import { UpdateGrupoUsuarioDto } from './dto/update-grupo-usuario.dto';
+import { GrupoUsuarioPermissaoDto } from './dto/grupo-usuario-permissao.dto';
 
 @Injectable()
 export class GrupoUsuarioService {
@@ -90,6 +91,26 @@ export class GrupoUsuarioService {
     await this.grupoUsuarioUsuarioRepository.softDelete({ grupoUsuarioId, usuarioId });
 
     return { mensagem: 'Usuário removido do grupo!' };
+  }
+
+  async adicionarPermissao(dto: GrupoUsuarioPermissaoDto) {
+    const { grupoUsuarioId, permissaoId } = dto;
+
+    const relacionamento = GrupoUsuarioPermissaoEntity.create(grupoUsuarioId, permissaoId);
+    const criado = await this.grupoUsuarioPermissaoRepository.save(relacionamento);
+
+    return {
+      mensagem: 'Permissão adicionada ao grupo!',
+      id: criado?.id,
+    };
+  }
+
+  async removerPermissao(dto: GrupoUsuarioPermissaoDto) {
+    const { grupoUsuarioId, permissaoId } = dto;
+
+    await this.grupoUsuarioPermissaoRepository.softDelete({ grupoUsuarioId, permissaoId });
+
+    return { mensagem: 'Permissão removida do grupo!' };
   }
 
   async existeGrupoUsuarioComDescricao(descricao: string): Promise<boolean> {
