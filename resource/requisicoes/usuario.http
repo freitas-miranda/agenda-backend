@@ -13,7 +13,7 @@ POST http://localhost:3000/api/v1/usuario
 Content-Type: application/json
 
 {
-  "email": "teste@gmails.com",
+  "email": "teste@gmail.com",
   "senha": "Alan@123"
 } 
   

@@ -42,3 +42,11 @@ Content-Type: application/json
 
 ###  Deletar grupo de usuários
 DELETE http://localhost:3000/api/v1/grupo-usuario/2
+
+
+
+### Relacionar usuário ao grupo de usuários
+POST http://localhost:3000/api/v1/grupo-usuario/1/usuario/1
+
+### Remover usuário do grupo de usuários
+DELETE http://localhost:3000/api/v1/grupo-usuario/1/usuario/1

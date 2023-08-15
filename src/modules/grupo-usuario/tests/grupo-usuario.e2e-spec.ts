@@ -7,9 +7,16 @@ const params = {
   descricao: 'Administradores',
 };
 
+const paramsUsuario = {
+  nome: 'Usuario: Teste e2e grupo de usuário',
+  email: 'grupo_usuario@teste.com',
+  senha: '12345678',
+};
+
 describe('GrupoUsuario (e2e)', () => {
   let app: INestApplication;
   let access_token: string;
+  let usuario: any;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -18,6 +25,23 @@ describe('GrupoUsuario (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+
+    // Obter um usuário válido
+    const usuarios = await request(app.getHttpServer())
+      .get('/api/v1/usuario?email=' + paramsUsuario.email)
+      .set('Authorization', 'Bearer ' + access_token);
+    if (usuarios.body.length > 0) {
+      usuario = usuarios.body[0];
+    } else {
+      const retorno = await request(app.getHttpServer())
+        .post('/api/v1/usuario')
+        .set('Authorization', 'Bearer ' + access_token)
+        .send(paramsUsuario)
+        .expect(HttpStatus.CREATED);
+      usuario = retorno.body;
+    }
+
+    // Obter uma permissão válida
   });
 
   it('[POST /api/v1/grupo-usuario] Criar um grupo de usuário', async () => {
@@ -121,6 +145,28 @@ describe('GrupoUsuario (e2e)', () => {
       .expect(HttpStatus.OK)
       .then((value) => {
         expect(value.body).toEqual({ mensagem: 'Excluído com sucesso!' });
+      });
+  });
+
+  it('[POST /api/v1/grupo-usuario/:id/usuario/:usuarioId] Adicionar um usuário no grupo', async () => {
+    await request(app.getHttpServer())
+      .post('/api/v1/grupo-usuario/' + params['id'] + '/usuario/' + usuario.id)
+      .set('Authorization', 'Bearer ' + access_token)
+      .expect(HttpStatus.CREATED)
+      .then((retorno) => {
+        expect(retorno.body).toHaveProperty('id');
+        expect(retorno.body.mensagem).toContain('Usuário adicionado ao grupo!');
+        expect(retorno.body.id).toBeTruthy();
+      });
+  });
+
+  it('[DELETE /api/v1/grupo-usuario/:id/usuario/:usuarioId] Adicionar um usuário no grupo', async () => {
+    await request(app.getHttpServer())
+      .delete('/api/v1/grupo-usuario/' + params['id'] + '/usuario/' + usuario.id)
+      .set('Authorization', 'Bearer ' + access_token)
+      .expect(HttpStatus.OK)
+      .then((retorno) => {
+        expect(retorno.body).toEqual({ mensagem: 'Usuário removido do grupo!' });
       });
   });
 

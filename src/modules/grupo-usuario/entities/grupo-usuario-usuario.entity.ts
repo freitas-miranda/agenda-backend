@@ -5,10 +5,10 @@ export class GrupoUsuarioUsuarioEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ name: 'grupo_usuario_id' })
   grupoUsuarioId: number;
 
-  @Column()
+  @Column({ name: 'usuario_id' })
   usuarioId: number;
 
   @CreateDateColumn({ name: 'created_at' })

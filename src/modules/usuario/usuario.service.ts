@@ -4,6 +4,7 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { Repository } from 'typeorm';
 import { UsuarioEntity } from './entities/usuario.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { FindUsuarioDto } from './dto/find-usuario.dto';
 
 @Injectable()
 export class UsuarioService {
@@ -23,8 +24,17 @@ export class UsuarioService {
     return { id: criado?.id };
   }
 
-  async findAll() {
-    return this.usuarioRepository.find({ select: ['id', 'ativo', 'email'] });
+  async findAll(dto: FindUsuarioDto) {
+    const where: any = {};
+
+    if (dto.hasOwnProperty('email')) {
+      where.email = dto.email;
+    }
+
+    return this.usuarioRepository.find({
+      select: ['id', 'ativo', 'email'],
+      where,
+    });
   }
 
   async findOne(id: number) {

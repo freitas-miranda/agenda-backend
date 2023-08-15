@@ -3,7 +3,6 @@ import { GrupoUsuarioService } from './grupo-usuario.service';
 import { CreateGrupoUsuarioDto } from './dto/create-grupo-usuario.dto';
 import { UpdateGrupoUsuarioDto } from './dto/update-grupo-usuario.dto';
 import { FindGrupoUsuarioDto } from './dto/find-grupo-usuario.dto';
-import { GrupoUsuarioPermissaoDto } from './dto/grupo-usuario-permissao.dto';
 
 @Controller('api/v1/grupo-usuario')
 export class GrupoUsuarioController {
