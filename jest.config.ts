@@ -6,7 +6,7 @@ export const configBase = {
   moduleFileExtensions: ['js', 'json', 'ts'],
   testRegex: '.*\\.spec\\.ts$',
   transform: {
-    '^.+\\.(t|j)s$': 'ts-jest',
+    '^.+\\.(t|j)s$': '@swc/jest',
   },
   collectCoverageFrom: ['<rootDir>/src/app/**/*.(t|j)s', '!<rootDir>/src/**/*module.(t|j)s'],
   coverageDirectory: '../coverage',
