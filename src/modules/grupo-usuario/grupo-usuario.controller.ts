@@ -34,6 +34,28 @@ export class GrupoUsuarioController {
     return this.service.remove(id);
   }
 
+  @Post(':id/usuario/:usuarioId')
+  async adicionarUsuario(
+    @Param('id', new ParseIntPipe()) grupoUsuarioId: number,
+    @Param('usuarioId', new ParseIntPipe()) usuarioId: number
+  ) {
+    return this.service.adicionarUsuario({
+      grupoUsuarioId,
+      usuarioId,
+    });
+  }
+
+  @Delete(':id/usuario/:usuarioId')
+  async removerUsuario(
+    @Param('id', new ParseIntPipe()) grupoUsuarioId: number,
+    @Param('usuarioId', new ParseIntPipe()) usuarioId: number
+  ) {
+    return this.service.removerUsuario({
+      grupoUsuarioId,
+      usuarioId,
+    });
+  }
+
   @Post(':id/permissao/:permissaoId')
   async adicionarPermissao(
     @Param('id', new ParseIntPipe()) grupoUsuarioId: number,
