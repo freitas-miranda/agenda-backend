@@ -56,8 +56,8 @@ $ npx nest g resource /modules/meu_modulo
 - [x] Criar o módulo usuários
 - [x] Criar o módulo grupo de usuários
 - [x] Criar o módulo permissões
-- [ ] Relacionar usuários ao grupo
-- [ ] Relacionar permissões ao grupo
+- [x] Relacionar usuários ao grupo
+- [x] Relacionar permissões ao grupo
 - [ ] Implantar segurança da API
     - [ ] Autenticação dos usuários (Login)
     - [ ] Autorização de rotas (Permissões)
