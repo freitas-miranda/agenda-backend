@@ -61,6 +61,7 @@ $ npx nest g resource /modules/meu_modulo
 - [ ] Implantar segurança da API
     - [ ] Autenticação dos usuários (Login)
     - [ ] Autorização de rotas (Permissões)
+- [ ] Implementar recuperação de senha
 
 ## © Licença
 Distribuído sob a licença MIT. Veja `LICENSE.txt` para mais informações.
